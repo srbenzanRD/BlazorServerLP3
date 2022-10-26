@@ -1,17 +1,18 @@
 @page "/productos"
+
 @using Data.Models
 
 <PageTitle>Productos Registrados</PageTitle>
 <h1>Productos</h1>
 <label for="txtNombre">Nombre</label>
-<input @bind="ProductoSeleccionado.Nombre" type="text" name="txtNombre" id="txtNombre">
+<input @bind="ProductoSeleccionado!.Nombre" type="text" name="txtNombre" id="txtNombre">
 <label for="txtDescripcion">Descripción</label>
-<input @bind="ProductoSeleccionado.Descripcion" type="text" name="txtDescripcion" id="txtDescripcion">
+<input @bind="ProductoSeleccionado!.Descripcion" type="text" name="txtDescripcion" id="txtDescripcion">
 <label for="txtPrecio">Precio</label>
-<input @bind="ProductoSeleccionado.Precio" type="number" name="txtPrecio" id="txtPrecio">
+<input @bind="ProductoSeleccionado!.Precio" type="number" name="txtPrecio" id="txtPrecio">
 <div class="mt-3"></div>
-<button class='btn @(ProductoSeleccionado.productoID==0?"btn-success":"btn-warning")' @onclick="Guardar">
-    <span class='oi @(ProductoSeleccionado.productoID==0?"oi-plus":"oi-pencil")'></span>
+<button class='btn @(ProductoSeleccionado!.productoID==0?"btn-success":"btn-warning")' @onclick="Guardar">
+    <span class='oi @(ProductoSeleccionado!.productoID==0?"oi-plus":"oi-pencil")'></span>
 </button>
 <div class="mt-3"></div>
 <table class="table">
@@ -25,7 +26,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var producto in Productos)
+        @if(Productos!=null){
+            @foreach (var producto in Productos)
         {
             <tr>
                 <td>@producto.productoID</td>
@@ -44,6 +46,7 @@
                     </div>
                 </td>
             </tr>
+        }
         }
     </tbody>
 </table>
@@ -82,14 +85,14 @@ Precio = 300
     void Guardar()
     {
         if (
-        !string.IsNullOrEmpty(ProductoSeleccionado.Nombre) &&
-        !string.IsNullOrEmpty(ProductoSeleccionado.Descripcion)
+        !string.IsNullOrEmpty(ProductoSeleccionado!.Nombre) &&
+        !string.IsNullOrEmpty(ProductoSeleccionado!.Descripcion)
         )
         {
             if (ProductoSeleccionado.productoID == 0)
             {
                 ProductoSeleccionado.productoID = 
-                Productos.Count>0? (Productos!.Max(p => p.productoID) + 1) : 1;
+                Productos!.Count>0? (Productos!.Max(p => p.productoID) + 1) : 1;
                 Productos!.Add(ProductoSeleccionado);
                 ProductoSeleccionado = new Producto();
                 return;
@@ -100,5 +103,5 @@ Precio = 300
         }
     }
 
-    public Producto ProductoSeleccionado { get; set; } = new Producto();
+    public Producto? ProductoSeleccionado { get; set; } = new Producto();
 }

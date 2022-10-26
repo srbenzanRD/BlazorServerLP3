@@ -1,7 +1,7 @@
-using Data.Models;
+using  LP3.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Context;
+namespace LP3.Data.Context;
 
 public class LP3DbContext:DbContext,ILP3DbContext
 {
