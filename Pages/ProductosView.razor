@@ -1,0 +1,104 @@
+@page "/productos"
+@using Data.Models
+
+<PageTitle>Productos Registrados</PageTitle>
+<h1>Productos</h1>
+<label for="txtNombre">Nombre</label>
+<input @bind="ProductoSeleccionado.Nombre" type="text" name="txtNombre" id="txtNombre">
+<label for="txtDescripcion">Descripción</label>
+<input @bind="ProductoSeleccionado.Descripcion" type="text" name="txtDescripcion" id="txtDescripcion">
+<label for="txtPrecio">Precio</label>
+<input @bind="ProductoSeleccionado.Precio" type="number" name="txtPrecio" id="txtPrecio">
+<div class="mt-3"></div>
+<button class='btn @(ProductoSeleccionado.productoID==0?"btn-success":"btn-warning")' @onclick="Guardar">
+    <span class='oi @(ProductoSeleccionado.productoID==0?"oi-plus":"oi-pencil")'></span>
+</button>
+<div class="mt-3"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var producto in Productos)
+        {
+            <tr>
+                <td>@producto.productoID</td>
+                <td>@producto.Nombre</td>
+                <td>@producto.Descripcion</td>
+                <td>@producto.Precio.ToString("N2")</td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-warning" @onclick="()=>Editar(producto.productoID)">
+
+                            <span class="oi oi-pencil"></span>
+                        </button>
+                        <button class="btn btn-danger" @onclick="()=>Eliminar(producto.productoID)">
+                            <span class="oi oi-trash"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    //https://icon-sets.iconify.design/oi/trash/
+    public List<Producto>? Productos { get; set; }
+    = new List<Producto>(){
+new Producto(){
+productoID = 1,
+Nombre= "Pasta dental",
+Descripcion = "Higiene Vucal",
+Precio = 250
+},
+new Producto(){
+productoID = 2,
+Nombre= "Pasta dental",
+Descripcion = "Higiene Vucal",
+Precio = 300
+},
+    };
+    void Editar(int Id)
+    {
+        ProductoSeleccionado = Productos!.FirstOrDefault(p => p.productoID == Id) ?? new Producto();
+    }
+    void Eliminar(int Id)
+    {
+        ProductoSeleccionado = Productos!.FirstOrDefault(p => p.productoID == Id);
+        if (ProductoSeleccionado != null)
+        {
+            Productos!.Remove(ProductoSeleccionado);
+            ProductoSeleccionado = new Producto();
+        }
+    }
+
+    void Guardar()
+    {
+        if (
+        !string.IsNullOrEmpty(ProductoSeleccionado.Nombre) &&
+        !string.IsNullOrEmpty(ProductoSeleccionado.Descripcion)
+        )
+        {
+            if (ProductoSeleccionado.productoID == 0)
+            {
+                ProductoSeleccionado.productoID = 
+                Productos.Count>0? (Productos!.Max(p => p.productoID) + 1) : 1;
+                Productos!.Add(ProductoSeleccionado);
+                ProductoSeleccionado = new Producto();
+                return;
+            }
+            var indice = Productos!.FindIndex(p => p.productoID == ProductoSeleccionado.productoID);
+            Productos![indice] = ProductoSeleccionado;
+            ProductoSeleccionado = new Producto();
+        }
+    }
+
+    public Producto ProductoSeleccionado { get; set; } = new Producto();
+}
