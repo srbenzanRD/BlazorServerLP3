@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSqlite<LP3DbContext>("Data Source=.//Data//Context//localDB.db");
+builder.Services.AddSqlite<LP3DbContext>("Data Source=.//Data//Context//localDB.sqlite");
 builder.Services.AddScoped<ILP3DbContext,LP3DbContext>();
 builder.Services.AddScoped<IProductoService,ProductoService>();
 builder.Services.AddSingleton<WeatherForecastService>();
