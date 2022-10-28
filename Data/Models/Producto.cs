@@ -18,4 +18,11 @@ public class Producto
             Precio = precio
             };
     }
+
+    public void Update(string nombre, string descripcion, double precio)
+    {
+        Nombre = nombre;
+        Descripcion = Descripcion;
+        Precio = precio;
+    }
 }

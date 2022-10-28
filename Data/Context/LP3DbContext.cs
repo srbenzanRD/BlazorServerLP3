@@ -1,12 +1,19 @@
-using  LP3.Data.Models;
+using LP3.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LP3.Data.Context;
 
 public class LP3DbContext:DbContext,ILP3DbContext
 {
-    public virtual DbSet<Producto> Productos {get;} = null!;
-
+    public LP3DbContext(DbContextOptions options):base(options)
+    {
+        
+    }
+    public virtual DbSet<Producto> Productos {get; set;} = null!;
+    public override int SaveChanges()
+    {
+        return base.SaveChanges();
+    }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return base.SaveChangesAsync(cancellationToken);
@@ -15,6 +22,7 @@ public class LP3DbContext:DbContext,ILP3DbContext
 
 public interface ILP3DbContext
 {
-    public DbSet<Producto> Productos {get;}
+    public DbSet<Producto> Productos {get; set;}
+    public int SaveChanges();
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

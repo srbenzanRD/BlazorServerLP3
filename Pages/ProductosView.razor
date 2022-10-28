@@ -54,54 +54,48 @@
 @code {
     //https://icon-sets.iconify.design/oi/trash/
     public List<Producto>? Productos { get; set; }
-    = new List<Producto>(){
-new Producto(){
-productoID = 1,
-Nombre= "Pasta dental",
-Descripcion = "Higiene Vucal",
-Precio = 250
-},
-new Producto(){
-productoID = 2,
-Nombre= "Pasta dental",
-Descripcion = "Higiene Vucal",
-Precio = 300
-},
-    };
+    = new List<Producto>();
+    async Task Cargar()
+    {
+        var r = await productoService.Consultar();
+        if(r.Succeeded) Productos = r.Data;
+    }
+    protected async override Task OnInitializedAsync()
+    {
+        await Cargar();
+    }
     void Editar(int Id)
     {
         ProductoSeleccionado = Productos!.FirstOrDefault(p => p.productoID == Id) ?? new Producto();
     }
-    void Eliminar(int Id)
+    async Task Eliminar(int Id)
     {
-        ProductoSeleccionado = Productos!.FirstOrDefault(p => p.productoID == Id);
-        if (ProductoSeleccionado != null)
-        {
-            Productos!.Remove(ProductoSeleccionado);
-            ProductoSeleccionado = new Producto();
-        }
+        await productoService.Eliminar(Id);
+        await Cargar();
     }
 
-    void Guardar()
+    async Task Guardar()
     {
         if (
         !string.IsNullOrEmpty(ProductoSeleccionado!.Nombre) &&
         !string.IsNullOrEmpty(ProductoSeleccionado!.Descripcion)
         )
         {
-            if (ProductoSeleccionado.productoID == 0)
-            {
-                ProductoSeleccionado.productoID = 
-                Productos!.Count>0? (Productos!.Max(p => p.productoID) + 1) : 1;
-                Productos!.Add(ProductoSeleccionado);
-                ProductoSeleccionado = new Producto();
-                return;
-            }
-            var indice = Productos!.FindIndex(p => p.productoID == ProductoSeleccionado.productoID);
-            Productos![indice] = ProductoSeleccionado;
-            ProductoSeleccionado = new Producto();
+           if(ProductoSeleccionado.productoID==0)
+           {
+            await productoService.Crear(
+            ProductoSeleccionado!.Nombre,
+            ProductoSeleccionado!.Descripcion,
+            ProductoSeleccionado!.Precio
+            );
+            return;
+           }
+            //Codigo para editar
+           
+            await Cargar();
         }
     }
 
     public Producto? ProductoSeleccionado { get; set; } = new Producto();
 }
+
