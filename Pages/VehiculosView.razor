@@ -1,0 +1,62 @@
+@page "/vehiculos"
+
+@using Data.Models
+
+<PageTitle>Vehiculos Registrados</PageTitle>
+<h1>Vehiculos</h1>
+<select @bind="MarcaSeleccionada" name="Marcas" id="Marcas">
+    @foreach (var marca in Marcas)
+    {
+        <option value="@marca.Id">@marca.Nombre</option>
+    }
+</select>
+
+<select @bind="ModeloSeleccionada" name="Modelos" id="Modelos">
+    @foreach (var modelo in Modelos.Where(m=>m.Marca.Id == MarcaSeleccionada))
+    {
+        <option value="@modelo.Id">@modelo.Nombre</option>
+    }
+</select>
+
+<div class="mt-3"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       
+    </tbody>
+</table>
+
+@code {
+    
+    public int MarcaSeleccionada {get; set;}
+    public int ModeloSeleccionada {get; set;}
+    public List<VehiculoMarca> Marcas { get; set; }
+    = new List<VehiculoMarca>(){ 
+        new VehiculoMarca(){Id = 1, Nombre = "Toyota"},
+        new VehiculoMarca(){Id = 2, Nombre = "Honda"},
+        };
+    public List<VehiculoModelo> Modelos { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        MarcaSeleccionada = Marcas[0].Id;
+        Modelos = new List<VehiculoModelo>()
+        {
+            new VehiculoModelo(){ Id = 1, Marca = Marcas[0], Nombre ="Hilux"},
+            new VehiculoModelo(){ Id = 2, Marca = Marcas[0], Nombre ="Tacoma"},
+            new VehiculoModelo(){ Id = 3, Marca = Marcas[1], Nombre ="Frineline"},
+            new VehiculoModelo(){ Id = 4, Marca = Marcas[1], Nombre ="CRV"},
+        };
+        return base.OnInitializedAsync();
+    }
+
+}
+
