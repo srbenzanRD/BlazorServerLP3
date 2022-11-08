@@ -18,6 +18,7 @@ public class VehiculoMarca
 public class VehiculoModelo
 {
     public int Id { get; set; } 
-    public VehiculoMarca Marca { get; set; }
+    public int MarcaId { get; set; } 
+    public virtual VehiculoMarca Marca { get; set; }
     public string Nombre { get; set; }
 }

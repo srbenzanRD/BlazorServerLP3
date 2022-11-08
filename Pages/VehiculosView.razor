@@ -4,14 +4,16 @@
 
 <PageTitle>Vehiculos Registrados</PageTitle>
 <h1>Vehiculos</h1>
-<select @bind="MarcaSeleccionada" name="Marcas" id="Marcas">
+<label for="txtAnio">Año</label>
+<input class="form-control" type="number" name="txtAnio" id="txtAnio" max="@Years.Max()" min="@Years.Min()"/>
+<select class="custom-select" @bind="MarcaSeleccionada" name="Marcas" id="Marcas">
     @foreach (var marca in Marcas)
     {
         <option value="@marca.Id">@marca.Nombre</option>
     }
 </select>
 
-<select @bind="ModeloSeleccionada" name="Modelos" id="Modelos">
+<select class="custom-select" @bind="ModeloSeleccionada" name="Modelos" id="Modelos">
     @foreach (var modelo in Modelos.Where(m=>m.Marca.Id == MarcaSeleccionada))
     {
         <option value="@modelo.Id">@modelo.Nombre</option>
@@ -35,9 +37,9 @@
 </table>
 
 @code {
-    
-    public int MarcaSeleccionada {get; set;}
+    public List<int> Years { get; set; }
     public int ModeloSeleccionada {get; set;}
+    public int MarcaSeleccionada {get; set;}
     public List<VehiculoMarca> Marcas { get; set; }
     = new List<VehiculoMarca>(){ 
         new VehiculoMarca(){Id = 1, Nombre = "Toyota"},
@@ -47,6 +49,10 @@
 
     protected override Task OnInitializedAsync()
     {
+        Years = new List<int>();
+        for(int y = DateTime.Now.Year+2; y>=(DateTime.Now.Year-10); y--){
+            Years.Add(y);
+        }
         MarcaSeleccionada = Marcas[0].Id;
         Modelos = new List<VehiculoModelo>()
         {
