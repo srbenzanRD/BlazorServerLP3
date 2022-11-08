@@ -14,7 +14,7 @@
 </select>
 
 <select class="custom-select" @bind="ModeloSeleccionada" name="Modelos" id="Modelos">
-    @foreach (var modelo in Modelos.Where(m=>m.Marca.Id == MarcaSeleccionada))
+    @foreach (var modelo in Modelos.Where(m=>m.Marca!.Id == MarcaSeleccionada))
     {
         <option value="@modelo.Id">@modelo.Nombre</option>
     }
@@ -37,7 +37,7 @@
 </table>
 
 @code {
-    public List<int> Years { get; set; }
+    public List<int> Years { get; set; }= null!;
     public int ModeloSeleccionada {get; set;}
     public int MarcaSeleccionada {get; set;}
     public List<VehiculoMarca> Marcas { get; set; }
@@ -45,7 +45,7 @@
         new VehiculoMarca(){Id = 1, Nombre = "Toyota"},
         new VehiculoMarca(){Id = 2, Nombre = "Honda"},
         };
-    public List<VehiculoModelo> Modelos { get; set; }
+    public List<VehiculoModelo> Modelos { get; set; }= null!;
 
     protected override Task OnInitializedAsync()
     {
