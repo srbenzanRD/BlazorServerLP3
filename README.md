@@ -33,7 +33,7 @@ builder.Services.AddScoped<IMyDbContext,MyDbContext>();
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<LP3DbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<MyDbContext>();
     if (db.Database.EnsureCreated())
     {
         
