@@ -2,7 +2,11 @@
 #GUÍA A SEGUIR
 <br/>
 1- Para iniciar la conexión a base de datos debe realizar la siguiente configuración:<br/>
-1.1 Agregar en el archivo "*.csproj" (es el archivo de la solución de Visual Studio) los paquetes necesarios para trabajar con Entity Framework (EF) están delimitados en el segmento siguiente (COPIAR): <br/>
+1.1 Agregar en el archivo "*.csproj" (es el archivo de la solución de Visual Studio) los paquetes necesarios para trabajar con Entity Framework (EF) están delimitados en el segmento siguiente (COPIAR): 
+<br/>
+
+DESCARGAR EL PROYECTO PARA VER EL CÓDIGO QUE DEBERÍA APARECER AQUÍ....
+<br/>
  <ItemGroup>
   		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
 		  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.7" />
